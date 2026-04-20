@@ -73,3 +73,14 @@ Don't over-engineer the config. If you see yourself adding `experimental` blocks
 ## 6. Rate limit tier difference
 
 Per CC-SPEC.md: Crypto's free tier is **1,000 operations/month**, NOT 100. Crypto operations are ~1000x cheaper than screenshot/preview/PDF operations. Copying the rate-limit config from `validate/lib/rate-limit.ts` is fine, but verify the tier counts are adjusted for crypto.
+
+---
+
+## ✅ Completion Record
+
+- **Completed:** 2026-04-13
+- **Final commit:** [commit hash from original buildout]
+- **Vercel deployment:** green
+- **Agents invoked:** architect, backend-agent, review-qa-agent
+- **Smoke tests:** [N of N] passing
+- **Notes:** Retired as part of 2026-04-20 housekeeping sweep. Build-time advisory for an API that is now built. Content absorbed into platform CLAUDE.md and repo CLAUDE.md files.
