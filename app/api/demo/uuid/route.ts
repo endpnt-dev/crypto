@@ -1,12 +1,19 @@
 import { NextRequest } from 'next/server'
-import { makeDemoApiCall } from '@/lib/demo-proxy'
-
-export async function POST(request: NextRequest) {
-  const body = await request.json()
-  return makeDemoApiCall(request, '/api/v1/uuid', body)
-}
+import { demoProxy } from '@/lib/demo-proxy'
+import { ALLOWED_ORIGINS } from '@/lib/demo-config'
 
 export async function GET(request: NextRequest) {
-  // For GET requests, pass empty body to generate UUID v4
-  return makeDemoApiCall(request, '/api/v1/uuid', {})
+  return demoProxy(request, {
+    endpoint: '/uuid',
+    allowedOrigins: ALLOWED_ORIGINS,
+    allowedMethods: ['GET', 'POST'],
+  })
+}
+
+export async function POST(request: NextRequest) {
+  return demoProxy(request, {
+    endpoint: '/uuid',
+    allowedOrigins: ALLOWED_ORIGINS,
+    allowedMethods: ['GET', 'POST'],
+  })
 }

@@ -69,6 +69,15 @@ export const ERROR_CODES = {
   JWT_INVALID_AUDIENCE: 'JWT_INVALID_AUDIENCE',
   INPUT_TOO_LARGE: 'INPUT_TOO_LARGE',
   INVALID_CHARSET: 'INVALID_CHARSET',
+  // Demo-proxy specific
+  DEMO_UNAVAILABLE: 'DEMO_UNAVAILABLE',
+  ORIGIN_NOT_ALLOWED: 'ORIGIN_NOT_ALLOWED',
+  UNSUPPORTED_OPERATION: 'UNSUPPORTED_OPERATION',
+} as const
+
+export const DEMO_RATE_LIMIT = {
+  requests_per_window: 20,
+  window_minutes: 10,
 } as const
 
 // Type exports

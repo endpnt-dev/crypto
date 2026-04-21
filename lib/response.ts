@@ -50,7 +50,7 @@ export function errorResponse(
 }
 
 export function generateRequestId(): string {
-  return `req_${Math.random().toString(36).substr(2, 8)}`
+  return `req_${Math.random().toString(36).slice(2, 10)}`
 }
 
 export function getErrorMessage(code: ErrorCode): string {
@@ -72,6 +72,10 @@ export function getErrorMessage(code: ErrorCode): string {
     JWT_INVALID_AUDIENCE: 'JWT token audience is invalid.',
     INPUT_TOO_LARGE: 'Input data is too large. Maximum size is 1MB.',
     INVALID_CHARSET: 'Invalid character set specified.',
+    // Demo-proxy specific error messages
+    DEMO_UNAVAILABLE: 'Demo service temporarily unavailable.',
+    ORIGIN_NOT_ALLOWED: 'Origin not allowed for demo access.',
+    UNSUPPORTED_OPERATION: 'Unsupported operation. Check the endpoint documentation.',
   }
   return messages[code]
 }
