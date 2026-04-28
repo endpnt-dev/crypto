@@ -1,6 +1,6 @@
-# CLAUDE.md — Crypto API Specific Rules
+# CLAUDE.md — Cipher API Specific Rules
 
-**This file supplements `C:\Repositories\endpnt\CLAUDE.md` (platform-wide rules).** Read both. Universal rules (definition of done, mandatory workflow, agent usage, status-report honesty, etc.) are in the platform file. Only Crypto-specific guidance lives here.
+**This file supplements `C:\Repositories\endpnt\CLAUDE.md` (platform-wide rules).** Read both. Universal rules (definition of done, mandatory workflow, agent usage, status-report honesty, etc.) are in the platform file. Only Cipher-specific guidance lives here.
 
 ---
 
@@ -52,7 +52,7 @@ Pass explicit `algorithms` array to `verify()`. Never rely on defaults.
 
 ### Node's built-in `crypto` module
 
-For SHA family, HMAC, random: use Node's built-in, not third-party. Verify available algorithms:
+For SHA family, HMAC, random: use Node's built-in `crypto` module (the Node.js standard library), not third-party. Verify available algorithms:
 
 ```typescript
 import { getHashes } from 'crypto';
@@ -61,30 +61,32 @@ console.log(getHashes());  // Lists all supported hash algorithms
 
 SHA-3 variants are named `sha3-256` and `sha3-512` in Node — confirm exact names before hardcoding.
 
+> **Note on naming:** This API is `cipher` (the endpnt.dev service). The underlying Node standard-library module that provides primitives is still called `crypto` — that's a Node name, not an endpnt name. When this file references Node's `crypto` module, it means the Node.js standard library. When it references this API, it's "Cipher."
+
 ---
 
 ## No Native Modules Needed (simpler than other APIs)
 
-Crypto uses only pure-JS libraries. No `@napi-rs/canvas`, no binaries, no WASM. This means:
+Cipher uses only pure-JS libraries. No `@napi-rs/canvas`, no binaries, no WASM. This means:
 
 - `next.config.js` can be minimal (just `reactStrictMode: true`)
 - No `serverComponentsExternalPackages` entries needed
 - No webpack externals hacks
 - No binary bundling
 
-**If you find yourself adding `experimental` blocks to next.config.js for this API, stop and verify it's actually necessary.** Crypto is the simplest API in the platform — keep the config simple too.
+**If you find yourself adding `experimental` blocks to next.config.js for this API, stop and verify it's actually necessary.** Cipher is the simplest API in the platform — keep the config simple too.
 
 ---
 
-## Rate Limit Tier Differs
+## Rate Limit Tiers
 
-Crypto operations are ~1000x cheaper than screenshot/PDF ops. Free tier is **1,000 operations/month**, NOT 100.
+Cipher uses the platform-standard tier limits. Free tier is **100 operations/month** — matching `web/lib/pricing.ts` (source of truth) and `lib/config.ts` (enforcement). The earlier claim of 1,000/month in this file was incorrect (traced to a false citation in a retired addendum spec).
 
-Copying `lib/rate-limit.ts` from `validate/` is correct, but verify the tier counts are adjusted for crypto's higher limits.
+Copying `lib/rate-limit.ts` from another API is correct — cipher uses the platform-standard tier counts, no adjustment needed.
 
 ---
 
-## Crypto-Specific Error Codes
+## Cipher-Specific Error Codes
 
 Beyond platform errors:
 - `UNSUPPORTED_ALGORITHM` (400)
@@ -113,4 +115,4 @@ Set `maxDuration: 10` in `vercel.json` for `/bcrypt/hash` and return a clear tim
 
 ## `review-qa-agent` is MANDATORY for this API
 
-Beyond the universal agent guidance: for Crypto, run `review-qa-agent` BEFORE the final commit on ANY change. A missed security bug here is a much bigger deal than a missed bug in color conversion or markdown rendering.
+Beyond the universal agent guidance: for Cipher, run `review-qa-agent` BEFORE the final commit on ANY change. A missed security bug here is a much bigger deal than a missed bug in color conversion or string validation.

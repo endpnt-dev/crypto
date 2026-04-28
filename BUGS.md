@@ -4,32 +4,28 @@
 
 **ID prefix:** `CI-NNN` (sequential, do not reuse).
 
-**Last updated:** 2026-04-24 (created by first biweekly code health audit).
+**Last updated:** 2026-04-28.
 
 ---
 
 ## Open bugs
 
-### CI-001 — Free-tier rate limit discrepancy: CLAUDE.md says 1,000/month, config enforces 100/month
-
-- **Severity:** Medium (pre-launch blocker — one of them is wrong)
-- **Files:** `CLAUDE.md`, `lib/config.ts`
-- **Discovered:** 2026-04-24 (biweekly code health audit)
-- **Symptom:** `CLAUDE.md` states: "Free tier is 1,000 operations/month, NOT 100." The actual `lib/config.ts` `TIER_LIMITS.free.requests_per_month` is `100`. These contradict each other — the rate limiter enforces the config value (100), not the CLAUDE.md claim (1,000).
-- **Root cause:** Either (a) the config was not updated when a decision was made to give cipher a higher free tier, or (b) the CLAUDE.md was written with an aspirational free-tier limit that was never implemented in config.
-- **Impact:** Free-tier cipher users are limited to 100 operations/month. If the intent was 1,000/month (to match the complexity of crypto operations vs. simpler APIs), free users are being under-served. If 100 is correct, the CLAUDE.md is misleading future CC sessions into believing the config should be 1,000. Either way, one of these values is wrong.
-- **Fix approach:**
-  1. Determine the correct free-tier limit for cipher — check `web/lib/pricing.ts` for what the marketing site promises.
-  2. If the limit should be 1,000: update `lib/config.ts` `TIER_LIMITS.free.requests_per_month` to 1000.
-  3. If the limit should be 100: update `CLAUDE.md` to remove the "NOT 100" claim.
-  4. Ensure `web/lib/pricing.ts` matches whatever is enforced.
-- **Status:** Open. Resolve before launch — pricing must match enforcement.
+*(None — all known bugs resolved.)*
 
 ---
 
 ## Resolved bugs
 
-*(None resolved yet — file created 2026-04-24.)*
+### CI-001 — Free-tier rate limit discrepancy: CLAUDE.md said 1,000/month, config enforces 100/month
+
+- **Severity:** Medium
+- **Files:** `CLAUDE.md`, `lib/config.ts`
+- **Discovered:** 2026-04-24 (biweekly code health audit)
+- **Symptom:** `CLAUDE.md` stated: "Free tier is 1,000 operations/month, NOT 100." The actual `lib/config.ts` `TIER_LIMITS.free.requests_per_month` was `100`. These contradicted each other.
+- **Root cause:** A false citation in `docs/specs/archive/DONE-CC-SPEC-ADDENDUM.md` (which claimed "Per CC-SPEC.md: 1,000/month") propagated into CLAUDE.md. The original spec actually specifies 100/month.
+- **Resolution:** Corrected `CLAUDE.md` to state 100/month with source references. `lib/config.ts`, `web/lib/pricing.ts`, and all cipher UI components were already correct at 100/month — no code changes required.
+- **Resolved:** 2026-04-28
+- **Resolution commit:** *(to be filled in after push)*
 
 ---
 
